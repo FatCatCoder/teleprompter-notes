@@ -8,7 +8,7 @@
               <v-btn style="position: fixed; top: 0; right: 0;" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
             </template>
 
-            <v-list style="min-width: 35vw;">
+            <v-list style="min-width: 90vw;">
               <v-list-item>
                 <v-switch
                 v-model="autoScrollEnabled"
@@ -17,23 +17,20 @@
               />
               </v-list-item>
               <v-list-item>
+                <v-label>Scroll Speed: {{scrollSpeed}}</v-label>
                 <v-slider
                 v-model="scrollSpeed"
                 min="0"
                 max="100"
-                step="1"
-                label="Scroll Speed"
-                :label="`Speed: ${scrollSpeed}`"
               />
               </v-list-item>
               <v-list-item>
+                <v-label>Font Size: {{fontSize}}</v-label>
                 <v-slider
                 v-model="fontSize"
                 min="4"
                 max="40"
                 step="1"
-                label="Font Size"
-                :label="`Size: ${fontSize}`"
               />
               </v-list-item>
               <v-list-item>
