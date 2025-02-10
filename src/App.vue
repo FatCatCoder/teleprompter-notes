@@ -96,7 +96,7 @@
         <v-card>
           <v-card-text>
             <v-textarea
-              :style="{ fontSize: fontSize + 'px', minHeight: '80vh' }"
+              :style="{ minHeight: '80vh' }"
               v-model="currentNote.content"
               label="Note Content"
               rows="10"
