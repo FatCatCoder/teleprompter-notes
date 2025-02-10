@@ -6,6 +6,9 @@ import vuetify from 'vite-plugin-vuetify';
 export default defineConfig({
   plugins: [vue(), vuetify()],
   base: '/teleprompter-notes/',
+  build: {
+    outDir: 'docs', // Change output folder to "docs"
+  },
   resolve: {
     alias: {
       '@': '/src',
