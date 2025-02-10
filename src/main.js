@@ -9,3 +9,10 @@ const vuetify = createVuetify(); // Create Vuetify instance
 
 app.use(vuetify);
 app.mount('#app');
+
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/teleprompter-notes/sw.js')
+      .then(() => console.log('Service Worker Registered'));
+  }
+  

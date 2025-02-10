@@ -3,12 +3,12 @@
     <v-container>
       
       <!-- Menu top right  -->
-      <v-menu style="position: fixed; top: 0; right: 0;">
+      <v-menu style="position: fixed; top: 0; right: 0; min-width: 35vw;">
             <template v-slot:activator="{ props }">
               <v-btn style="position: fixed; top: 0; right: 0;" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
             </template>
 
-            <v-list>
+            <v-list style="min-width: 35vw;">
               <v-list-item>
                 <v-switch
                 v-model="autoScrollEnabled"
@@ -26,12 +26,26 @@
                 :label="`Speed: ${scrollSpeed}`"
               />
               </v-list-item>
+              <v-list-item>
+                <v-slider
+                v-model="fontSize"
+                min="4"
+                max="40"
+                step="1"
+                label="Font Size"
+                :label="`Size: ${fontSize}`"
+              />
+              </v-list-item>
+              <v-list-item>
+                <v-btn @click="toggleTheme">toggle theme</v-btn>
+              </v-list-item>
             </v-list>
           </v-menu>
 
       <!-- Show Notes List -->
       <div v-if="currentView === 'list'">
 
+        <h5 class="text-h5">Teleprompter Notes!</h5>
         <!-- Add New Note Button -->
       <v-btn class="sticky-top" @click="addNewNote">Add New Note</v-btn>
 
@@ -60,9 +74,9 @@
 
       <!-- Show Note Details (Editable) -->
       <div v-if="currentView === 'note'">
-        <v-btn @click="goBack" color="primary">Back to List</v-btn>
+        <v-btn @click="goBack" color="primary" class="mb-4">Back to List</v-btn>
 
-        <v-row>
+        <!-- <v-row>
             <v-col>
               <v-switch
                 v-model="autoScrollEnabled"
@@ -80,11 +94,12 @@
                 :label="`Speed: ${scrollSpeed}`"
               />
             </v-col>
-          </v-row>
+          </v-row> -->
         
         <v-card>
           <v-card-text>
             <v-textarea
+              :style="{ fontSize: fontSize + 'px', minHeight: '80vh' }"
               v-model="currentNote.content"
               label="Note Content"
               rows="10"
@@ -117,6 +132,8 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import storageService from './storageService';  // Correctly import storageService
+import { useTheme } from 'vuetify'
+
 
 // States to handle notes and views
 const notes = ref([]);  // To hold the list of notes
@@ -124,6 +141,9 @@ const currentView = ref('list');  // Default to 'list' view
 const currentNote = ref(null);  // Holds the currently selected note
 const confirmDeleteDialog = ref(false);  // Dialog visibility for delete confirmation
 const noteToDeleteIndex = ref(null);  // Index of the note to delete
+const fontSize = ref(18); // Default font size
+const theme = useTheme()
+
 
 // Auto-scroll settings
 const autoScrollEnabled = ref(false);  // Whether auto-scroll is enabled
@@ -138,6 +158,10 @@ const loadNotes = async () => {
 
 // Load notes on mounted
 onMounted(loadNotes);
+
+function toggleTheme () {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+}
 
 // Add a new note to the list
 const addNewNote = () => {
@@ -211,7 +235,13 @@ watch(autoScrollEnabled, (newVal) => {
 .sticky-top {
   position: sticky;
   top: 0;
-  background-color: white;
   z-index: 10;
+}
+</style>
+
+<style scoped>
+/* Target the internal input field */
+::v-deep(.v-field__input) {
+  font-size: v-bind(fontSize + 'px') !important;
 }
 </style>
