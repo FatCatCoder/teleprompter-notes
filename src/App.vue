@@ -1,11 +1,40 @@
 <template>
   <v-app>
     <v-container>
-      <!-- Add New Note Button -->
-      <v-btn class="sticky-top" @click="addNewNote">Add New Note</v-btn>
+      
+      <!-- Menu top right  -->
+      <v-menu style="position: fixed; top: 0; right: 0;">
+            <template v-slot:activator="{ props }">
+              <v-btn style="position: fixed; top: 0; right: 0;" icon="mdi-dots-vertical" variant="text" v-bind="props"></v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item>
+                <v-switch
+                v-model="autoScrollEnabled"
+                label="Enable Auto-Scroll"
+                @change="toggleAutoScroll"
+              />
+              </v-list-item>
+              <v-list-item>
+                <v-slider
+                v-model="scrollSpeed"
+                min="0"
+                max="100"
+                step="1"
+                label="Scroll Speed"
+                :label="`Speed: ${scrollSpeed}`"
+              />
+              </v-list-item>
+            </v-list>
+          </v-menu>
 
       <!-- Show Notes List -->
       <div v-if="currentView === 'list'">
+
+        <!-- Add New Note Button -->
+      <v-btn class="sticky-top" @click="addNewNote">Add New Note</v-btn>
+
         <v-list>
           <v-list-item-group v-if="notes.length > 0">
             <v-list-item
@@ -54,7 +83,6 @@
           </v-row>
         
         <v-card>
-          <v-card-title>Note</v-card-title>
           <v-card-text>
             <v-textarea
               v-model="currentNote.content"
